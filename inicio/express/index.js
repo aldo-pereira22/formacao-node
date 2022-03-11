@@ -6,6 +6,15 @@ app.get("/",(req, res) => {
     res.send("Bem vindo Ao Site do Aldo!")
 })
 
+app.get("/canal", (req, res) => {
+    var teste = req.query["teste"]
+    if(!teste){
+        res.send("Nenhum canal fornecido!")
+    }else {
+
+        res.send(teste)
+    }
+})
 app.get("/blog/:artigo?", (req, res) => {
 
     var artigo = req.params.artigo
