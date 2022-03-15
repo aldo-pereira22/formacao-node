@@ -29,13 +29,13 @@ app.get("/blog/:artigo?", (req, res) => {
 
 app.get("/ola/:nome/:empresa",(req, res) => {
     let nome = req.params.nome
-    let empes = req.params.empresa
-    res.send("<h1> Oi !"+nome+ " da empresa: " + empes+ "</h1>"  )
+    let empresa = req.params.empresa
+    res.send("<h1> Oi !"+nome+ " da empresa: " + empresa + "</h1>"  )
 })
 
 app.listen( 3000,  (err) => {
     if(err){
-        console.log("Ocorreu um erro!")
+        console.log("Ocorreu um erro ao acessar o site!")
     }else {
         console.log("Servidor iniciado com sucesso!")
     }
