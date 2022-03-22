@@ -9,10 +9,11 @@
         <p><%= pergunta.descricao %></p>
         <hr>
 
-        <form action="">
+        <form action="/responder" method="POST">
             <h3>Responda</h3>
             <label for="">Resposta:</label>
             <textarea placeholder="Digite sua resposta aqui." class="form-control" name="corpo"></textarea> <br>
+            <input type="hidden" name="pergunta" id="" value="<%= pergunta.id %>">
             <button type="submit" class="btn btn-primary">Responder</button>
         </form>
     </div>
