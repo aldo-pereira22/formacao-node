@@ -13,7 +13,7 @@ app.use(express.static('public'))
 
 // Configuração do body-parser
 app.use(bodyParser.urlencoded({
-    extends:false
+    extended:false
 }))
 connection
     .authenticate()
