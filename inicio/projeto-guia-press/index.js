@@ -6,7 +6,8 @@ const connection = require('./database/database')
 
 const categoriesController = require('./categories/CategoriesController')
 const articlesController = require('./articles/ArticlesController')
-
+const Article = require('./articles/Article')
+const Category = require('./categories/Category')
 
 
 // Definindo a view engine
