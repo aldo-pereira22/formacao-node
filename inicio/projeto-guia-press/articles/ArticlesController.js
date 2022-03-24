@@ -5,8 +5,8 @@ router.get('/articles', (req, res) => {
     res.send("Rota de ARTIGOS")
 })
 
-router.get('/articles/admin/new', (req, res) => {
-    res.send("ROTA DE NOVO ARTIGO!")
+router.get('/admin/articles/new', (req, res) => {
+    res.render("admin/articles/new")
 })
 
 module.exports = router
