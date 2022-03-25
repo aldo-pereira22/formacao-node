@@ -10,14 +10,24 @@
                 </div>
                 <div class="card-body">
 
-                    <form action="/articles/save" method="POST">
-                        <input class="form-control" type="text" name="title" id=""
-                            placeholder="Defina o titulo do artigo"> <br>
-                            <textarea id="article" class="form-control" placeholder="Escreva seu artigo aqui" name="body"></textarea> <br>
+                    <form action="/articles/update" method="POST">
+                        <input type="hidden" id="<%= article.id %>" value="<%= article.id %>" name="id">
+                        <input class="form-control" type="text" name="title" id="" value="<%= article.title %>" 
+                            placeholder="Defina "> <br>
+                            <textarea id="article" class="form-control" placeholder="Escreva seu artigo aqui" name="body">
+                                <%= article.body %>
+                            </textarea> <br>
                             <label for="category">Categoria </label>
                             <select name="category" id="" class="form-control">
                                 <%categories.forEach( (category) => { %>
-                                    <option value="<%=category.id %>"> <%= category.title %> </option>
+
+                                    <% if(category.id == article.categoryId) { %>
+                                        <option value="<%=category.id %>" selected> <%= category.title %> </option>
+                                    
+                                    <%} else {%>
+                                        <option value="<%=category.id %>" > <%= category.title %> </option>
+
+                                    <% } %>
                                 <% }) %>
 
                             </select>
@@ -28,6 +38,9 @@
             </div>
         </div>
 
+        <div class="content" style="display:none">
+            <%-article.body %>
+        </div>
         <%- include('../../partials/footer.ejs')%>
         <script src="/tinymce/tinymce.min.js"></script>
 
@@ -36,6 +49,9 @@
                 selector: "#article",
                 plugins:[
                     'advlist autolink link image lists print hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'
-                ]
+                ],
+                init_instance_callback: () => {
+                    tinymce.get("article").setContent($("#content").html())
+                }
             })
         </script>

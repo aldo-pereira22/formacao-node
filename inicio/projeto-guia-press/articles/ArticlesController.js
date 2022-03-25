@@ -62,7 +62,7 @@ router.get("/admin/articles/edit/:id",(req, res) => {
         if(article != undefined){
             Category.findAll().then(categories => {
 
-                res.render("admin/articles/edit",{categories:categories})
+                res.render("admin/articles/edit",{categories:categories, article:article})
             })
         }else {
             res.redirect("/")
@@ -71,5 +71,31 @@ router.get("/admin/articles/edit/:id",(req, res) => {
         res.redirect("/")
     })
 
+})
+
+router.post("/articles/update", (req, res) => {
+    let id = req.body.id
+    let title = req.body.title
+    let body = req.body.body
+    let category  = req.body.category
+    console.log("\n\n Corpo do artigo: ", body, "\n\n")
+    console.log("\n\n ID artigooooo: ", id, "\n\n")
+    console.log("\n\n category do artigo: ", category, "\n\n")
+
+    Article.update({
+        title: title,
+        body: body,
+        categoryId: category,
+        slug:slugfy(title) 
+    },
+    {
+        where: {
+            id:id
+        }
+    }).then( () => {
+        res.redirect("/admin/articles")
+    }).catch( err => {
+        res.redirect("/")
+    })
 })
 module.exports = router
