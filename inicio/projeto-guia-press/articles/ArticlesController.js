@@ -6,17 +6,17 @@ const slugfy = require('slugify')
 
 router.get('/admin/articles', (req, res) => {
     Article.findAll({
-        include: [{model:Category}]
-    }).then( articles => {
-        res.render("admin/articles/index",{articles : articles})
+        include: [{ model: Category }]
+    }).then(articles => {
+        res.render("admin/articles/index", { articles: articles })
     })
-    
+
 })
 
 router.get('/admin/articles/new', (req, res) => {
     Category.findAll().then(categories => {
 
-        res.render("admin/articles/new", {categories:categories})
+        res.render("admin/articles/new", { categories: categories })
     })
 })
 
@@ -27,11 +27,11 @@ router.post('/articles/save', (req, res) => {
 
 
     Article.create({
-        title:title,
-        slug:slugfy(title),
-        body:body,
+        title: title,
+        slug: slugfy(title),
+        body: body,
         categoryId: category
-    }).then( () => {
+    }).then(() => {
         res.redirect('/admin/articles')
     })
 })
@@ -55,19 +55,19 @@ router.post("/articles/delete", (req, res) => {
     }
 })
 
-router.get("/admin/articles/edit/:id",(req, res) => {
+router.get("/admin/articles/edit/:id", (req, res) => {
     let id = req.params.id
     Article.findByPk(id).then(article => {
 
-        if(article != undefined){
+        if (article != undefined) {
             Category.findAll().then(categories => {
 
-                res.render("admin/articles/edit",{categories:categories, article:article})
+                res.render("admin/articles/edit", { categories: categories, article: article })
             })
-        }else {
+        } else {
             res.redirect("/")
         }
-    }).catch( err => {
+    }).catch(err => {
         res.redirect("/")
     })
 
@@ -77,7 +77,7 @@ router.post("/articles/update", (req, res) => {
     let id = req.body.id
     let title = req.body.title
     let body = req.body.body
-    let category  = req.body.category
+    let category = req.body.category
     console.log("\n\n Corpo do artigo: ", body, "\n\n")
     console.log("\n\n ID artigooooo: ", id, "\n\n")
     console.log("\n\n category do artigo: ", category, "\n\n")
@@ -86,44 +86,52 @@ router.post("/articles/update", (req, res) => {
         title: title,
         body: body,
         categoryId: category,
-        slug:slugfy(title) 
+        slug: slugfy(title)
     },
-    {
-        where: {
-            id:id
-        }
-    }).then( () => {
-        res.redirect("/admin/articles")
-    }).catch( err => {
-        res.redirect("/")
-    })
+        {
+            where: {
+                id: id
+            }
+        }).then(() => {
+            res.redirect("/admin/articles")
+        }).catch(err => {
+            res.redirect("/")
+        })
 })
 
-router.get("/article/page/:num", (req, res) => {
+router.get("/articles/page/:num", (req, res) => {
     let page = req.params.num
     let offset = 0;
-    if(isNaN(page) || page == 1){
+    if (isNaN(page) || page == 1) {
         offset = 0;
-    }else {
+    } else {
         offset = parseInt(page) * 4
     }
 
     Article.findAndCountAll({
-        limit:4,
-        offset: offset
+        limit: 4,
+        offset: offset,
+        order:[
+            ['id','DESC']
+        ]
     }).then(articles => {
         let next
-        if(offset + 4 >= articles.count){
+        if (offset + 4 >= articles.count) {
             next = false
-        }else {
-            next =true
+        } else {
+            next = true
         }
 
         let result = {
+            page: parseInt(page),
             next: next,
             articles: articles
         }
-        res.json(result)
+
+        Category.findAll().then(categories => {
+
+            res.render("admin/articles/page", {result: result, categories:categories})
+        })
     })
 })
 module.exports = router
