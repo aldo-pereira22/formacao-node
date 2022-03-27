@@ -1,6 +1,7 @@
-const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+const session = require('express-session')
 const connection = require('./database/database')
 
 
@@ -16,6 +17,13 @@ const User = require('./users/User')
 // Definindo a view engine
 app.set("view engine",'ejs')
 
+// Confiração das sessões
+app.use(session({
+    secret:'teste',
+    cookie: {
+        maxAge:30000
+    }
+}))
 // Arquivos estáticos
 app.use(express.static('public'))
 
@@ -37,6 +45,22 @@ app.use('/', categoriesController)
 app.use('/', articlesController)    
 app.use('/',usersController)
 
+app.get('/session', (req, res) => {
+    req.session.treinamento = "Formação NodeJs"
+    req.session.teste = "TESTE DE SESSÃO"
+
+    res.send("Sessão Gerada")
+
+
+})
+
+app.get('/leitura', (req, res) => {
+    res.json({
+        treinamento: req.session.treinamento,
+        teste: req.session.teste
+
+    })
+})
 
 app.get("/", (req, res) => {
     Article.findAll({
