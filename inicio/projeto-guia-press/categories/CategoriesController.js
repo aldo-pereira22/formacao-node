@@ -4,7 +4,7 @@ const Category = require('./Category')
 const slugify = require('slugify')
 
 router.get("/admin/categories/new", (req, res) => {
-    res.render('admin/categories/new')
+    res.render('admin/users/index', {users:users})
 })
 
 router.post("/categories/save", (req, res) => {
