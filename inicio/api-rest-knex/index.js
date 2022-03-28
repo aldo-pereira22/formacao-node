@@ -8,8 +8,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.use("/",router);n
+app.use("/",router);
 
-app.listen(8686,() => {
+app.listen(5000,() => {
     console.log("Servidor rodando")
 });
