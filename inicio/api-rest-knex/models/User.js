@@ -4,14 +4,14 @@ const bcrypt = require('bcrypt')
 
 class User {
 
-    async findAll(){
+    async findAll() {
 
         try {
-            let result = await knex.select(["idusers", "email","name", "role"]).table("users");
+            let result = await knex.select(["idusers", "email", "name", "role"]).table("users");
             
-            if(result > 0){
-                return result[0]
-            }else {
+            if (result.length > 0) {
+                return result
+            } else {
                 return undefined
             }
 
@@ -22,9 +22,9 @@ class User {
         }
     }
 
-    async findById(id){
+    async findById(id) {
         try {
-            let result = await knex.select(["idusers", "email","name", "role"]).where({idusers:id}).table("users");
+            let result = await knex.select(["idusers", "email", "name", "role"]).where({ idusers: id }).table("users");
             return result
         } catch (error) {
             console.log(error)
@@ -57,6 +57,50 @@ class User {
             console.log(error)
             return false
 
+        }
+    }
+
+    async update(id, email, name, role) {
+        let user = await this.findById(id)
+        
+        if (user.length > 0) { // se tiver usuário com esse ID
+            let editUser = {}
+            if (email != undefined) {
+                if (email != user.email) {
+                    let result = await this.findEmail(email)
+                    if (result == false) {
+                        editUser.email = email
+                    } else {
+
+                        return { error: "O usuário não existe!" }
+                    }
+                }
+            }
+            if (name != undefined) {
+                editUser.name = name
+            }
+
+            if (role != undefined) {
+                editUser.role = role
+            }
+
+            try {
+                
+                await knex.update(editUser).where({ idusers: id }).table("users")
+                return { status: true }
+
+
+            } catch (error) {
+                return { status: false, err:error }
+
+            }
+
+        } else {
+
+            return {
+                status: false,
+                error: "O usuário não existe!"
+            }
         }
     }
 }

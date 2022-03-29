@@ -4,7 +4,7 @@ class UserController {
 
     async findAll(req, res) {
         let users = await User.findAll()
-        res.json(users)
+        res.send(users)
     }
 
 
@@ -47,6 +47,25 @@ class UserController {
 
 
 
+    }
+
+    async edit(req, res){
+        let {idusers, name, email, role} = req.body
+        
+
+        let result = await User.update(idusers,email, name,role)
+        if(result != undefined){
+            if(result.status){
+                res.status(200)
+                res.send("Tudo ok")
+            }else {
+                res.status(406)
+                res.json(result.err)
+            }
+        }else {
+            res.status(406)
+            res.json("Ocorreu um erro ao editar")
+        }
     }
 
 }
