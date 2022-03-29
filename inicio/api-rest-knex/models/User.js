@@ -8,7 +8,7 @@ class User {
 
         try {
             let result = await knex.select(["idusers", "email", "name", "role"]).table("users");
-            
+
             if (result.length > 0) {
                 return result
             } else {
@@ -62,7 +62,7 @@ class User {
 
     async update(id, email, name, role) {
         let user = await this.findById(id)
-        
+
         if (user.length > 0) { // se tiver usuário com esse ID
             let editUser = {}
             if (email != undefined) {
@@ -85,23 +85,41 @@ class User {
             }
 
             try {
-                
+
                 await knex.update(editUser).where({ idusers: id }).table("users")
                 return { status: true }
 
 
             } catch (error) {
-                return { status: false, err:error }
+                return { status: false, err: error }
 
             }
 
         } else {
-
             return {
                 status: false,
                 error: "O usuário não existe!"
             }
         }
+    }
+
+    async delete(idusers) {
+        let user = await this.findById(idusers)
+
+
+
+        if (user.length > 0) {
+            try {
+                await knex.delete().where({ idusers }).table('users')
+                return { msg: "Usuário excluido com sucesso!" }
+            } catch (error) {
+                console.log(error)
+                return error
+            }
+        } else {
+            return { msg: "Usuário não encontrado" }
+        }
+
     }
 }
 

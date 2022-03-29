@@ -12,11 +12,11 @@ class UserController {
         let id = req.params.id
         let user = await User.findById(id)
 
-        if(user == undefined){
+        if (user == undefined) {
             res.status(404)
-            res.json({err:"Não encontrado!"})
+            res.json({ err: "Não encontrado!" })
             return
-        }else {
+        } else {
             // res.status(200)
             res.json(user)
         }
@@ -44,28 +44,33 @@ class UserController {
         res.status(200)
         console.log("Aprovado")
         res.send("Cadastrado com sucesso!")
-
-
-
     }
 
-    async edit(req, res){
-        let {idusers, name, email, role} = req.body
-        
+    async edit(req, res) {
+        let { idusers, name, email, role } = req.body
 
-        let result = await User.update(idusers,email, name,role)
-        if(result != undefined){
-            if(result.status){
+
+        let result = await User.update(idusers, email, name, role)
+        if (result != undefined) {
+            if (result.status) {
                 res.status(200)
                 res.send("Tudo ok")
-            }else {
+            } else {
                 res.status(406)
                 res.json(result.err)
             }
-        }else {
+        } else {
             res.status(406)
             res.json("Ocorreu um erro ao editar")
         }
+    }
+
+    async delete(req, res) {
+        let id = req.params.id
+        let result = await User.delete(id)
+        res.status(404)
+        res.json(result)
+
     }
 
 }
