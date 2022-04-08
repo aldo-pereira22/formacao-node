@@ -106,8 +106,6 @@ class User {
     async delete(idusers) {
         let user = await this.findById(idusers)
 
-
-
         if (user.length > 0) {
             try {
                 await knex.delete().where({ idusers }).table('users')
