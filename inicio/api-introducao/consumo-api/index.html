@@ -40,6 +40,13 @@
             .catch(err => console.log(err))
 
     }
+
+    function deleteGame(listItem) {
+
+        let id = listItem.getAttribute('data-id')
+        console.log(id)
+
+    }
     axios.get("http://localhost:5000/games")
         .then(
             response => {
@@ -48,7 +55,19 @@
 
                 games.forEach((game, index) => {
                     let item = document.createElement('li')
+                    item.setAttribute("data-id", game.id)
+                    item.setAttribute('data-title', game.title)
+                    item.setAttribute('data-year', game.year)
+                    item.setAttribute('data-price', game.price)
                     item.innerHTML = "ID - " + game.id + " Titulo - " + game.title + " Preço -" + game.price
+
+                    let deleteBtn = document.createElement('button')
+                    deleteBtn.innerHTML = "Deletar"
+                    deleteBtn.addEventListener("click", function() {
+                        deleteGame(item)
+                    })
+
+                    item.appendChild(deleteBtn)
                     list.appendChild(item)
                 })
             }
