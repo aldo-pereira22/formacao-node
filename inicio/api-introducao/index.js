@@ -1,6 +1,9 @@
 const expres = require('express')
 const app = expres()
 const bodyParser = require('body-parser')
+const cors = require('cors')
+
+app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -35,6 +38,7 @@ var db = {
 
 
 app.get("/games", (req, res) => {
+    console.log("TESTESSS")
     res.statusCode = 200
     res.json(db.games)
 
@@ -115,7 +119,6 @@ app.post('/game', (req, res) => {
 
 
 app.listen(5000, () => {
-
 
     console.log("Servidor rodando na porta: 5000")
 })
