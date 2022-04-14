@@ -38,7 +38,6 @@ var db = {
 
 
 app.get("/games", (req, res) => {
-    console.log("TESTESSS")
     res.statusCode = 200
     res.json(db.games)
 
@@ -108,6 +107,7 @@ app.put('/game/:id', (req, res) => {
 
 app.post('/game', (req, res) => {
     var { id, title, price, year } = req.body
+    id = Math.floor(Math.random() * (999 - 0) + 0)
     db.games.push({
         id,
         title,

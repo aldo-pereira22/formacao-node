@@ -9,14 +9,48 @@
 </head>
 
 <body>
-
+    <h4>Lista de games</h4>
+    <ul id="games"> </ul>
+    <hr>
+    <h4>Novo game</h4>
+    <input type="text" name="title" placeholder="Titulo" id="title"> <br>
+    <input type="number" name="year" placeholder="Ano" id="year"> <br>
+    <input type="number" name="price" placeholder="Preõ" id="preco"> <br>
+    <button type="button" onclick="createGame()"> Criar</button>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+    function createGame() {
+        let titleInput = document.getElementById('title')
+        let anoInput = document.getElementById('year')
+        let precoInput = document.getElementById('preco')
+
+        let game = {
+            title: titleInput.value,
+            year: anoInput.value,
+            price: precoInput.value
+        }
+
+        axios.post("http://localhost:5000/game", game)
+            .then(response => {
+                if (response.status == 201) {
+                    alert("Game cadadstrado!")
+                }
+            })
+            .catch(err => console.log(err))
+
+    }
     axios.get("http://localhost:5000/games")
         .then(
             response => {
-                console.log(response.request)
+                const games = response.data
+                let list = document.getElementById('games')
+
+                games.forEach((game, index) => {
+                    let item = document.createElement('li')
+                    item.innerHTML = "ID - " + game.id + " Titulo - " + game.title + " Preço -" + game.price
+                    list.appendChild(item)
+                })
             }
         ).catch(err => console.log(err)
 
