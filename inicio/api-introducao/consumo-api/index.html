@@ -17,6 +17,12 @@
     <input type="number" name="year" placeholder="Ano" id="year"> <br>
     <input type="number" name="price" placeholder="Preõ" id="preco"> <br>
     <button type="button" onclick="createGame()"> Criar</button>
+    <hr>
+    <h4>Editar game</h4>
+    <input type="text" name="titleEdit" placeholder="Titulo" id="titleEdit"> <br>
+    <input type="number" name="yearEdit" placeholder="Ano" id="yearEdit"> <br>
+    <input type="number" name="priceEdit" placeholder="Preõ" id="preco"> <br>
+    <button type="button" onclick="createGame()"> Editar</button>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
@@ -52,6 +58,12 @@
             })
 
     }
+
+    function loadForm(listItem) {
+
+        console.log(listItem)
+    }
+
     axios.get("http://localhost:5000/games")
         .then(
             response => {
@@ -71,8 +83,14 @@
                     deleteBtn.addEventListener("click", function() {
                         deleteGame(item)
                     })
+                    let editBtn = document.createElement('button')
+                    editBtn.innerHTML = "Editar"
+                    editBtn.addEventListener("click", function() {
+                        loadForm(item)
+                    })
 
                     item.appendChild(deleteBtn)
+                    item.appendChild(editBtn)
                     list.appendChild(item)
                 })
             }
