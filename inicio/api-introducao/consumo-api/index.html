@@ -19,10 +19,11 @@
     <button type="button" onclick="createGame()"> Criar</button>
     <hr>
     <h4>Editar game</h4>
+    <input type="text" name="idEdit" placeholder="id" id="idEdit" readonly> <br>
     <input type="text" name="titleEdit" placeholder="Titulo" id="titleEdit"> <br>
     <input type="number" name="yearEdit" placeholder="Ano" id="yearEdit"> <br>
-    <input type="number" name="priceEdit" placeholder="Preõ" id="preco"> <br>
-    <button type="button" onclick="createGame()"> Editar</button>
+    <input type="number" name="priceEdit" placeholder="Preõ" id="priceEdit"> <br>
+    <button type="button" onclick="updateGame()"> Editar</button>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
@@ -60,8 +61,44 @@
     }
 
     function loadForm(listItem) {
+        let id = listItem.getAttribute("data-id")
+        let title = listItem.getAttribute("data-title")
+        let year = listItem.getAttribute("data-year")
+        let price = listItem.getAttribute("data-price")
+        console.log(price)
 
-        console.log(listItem)
+        let idField = document.getElementById("idEdit")
+        idField.value = id
+
+        document.getElementById("titleEdit").value = title
+        document.getElementById("yearEdit").value = year
+        document.getElementById("priceEdit").value = price
+
+    }
+
+    function updateGame() {
+        let idInput = document.getElementById("idEdit")
+        let titleInput = document.getElementById('titleEdit')
+        let anoInput = document.getElementById('yearEdit')
+        let precoInput = document.getElementById('priceEdit')
+
+
+        let game = {
+            title: titleInput.value,
+            year: anoInput.value,
+            price: precoInput.value
+        }
+
+        let id = idInput.value
+
+        axios.put(`http://localhost:5000/game/${id}`, game)
+            .then(response => {
+                if (response.status == 200) {
+                    alert("Game Atualizado!")
+                }
+            })
+            .catch(err => console.log(err))
+
     }
 
     axios.get("http://localhost:5000/games")
