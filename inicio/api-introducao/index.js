@@ -33,6 +33,19 @@ var db = {
             year: "2008",
             price: 79
         }
+    ],
+    users: [{
+            id: 1,
+            nome: "Aldo Pereira",
+            email: "aldo@gmail.com",
+            password: "java"
+        },
+        {
+            id: 20,
+            nome: "João Victor",
+            email: "joaovictor@gmail.com",
+            password: "nodejs"
+        }
     ]
 }
 
@@ -115,6 +128,31 @@ app.post('/game', (req, res) => {
         year
     })
     res.sendStatus(201)
+})
+
+app.post("/auth", (req, res) => {
+    var { email, password } = req.body
+    if (email != undefined) {
+        let user = db.users.find(u => u.email == email)
+
+        if (user != undefined) {
+            if (user.password == password) {
+                res.status = 200,
+                    res.json({ token: "TOKEM GERADO" })
+            } else {
+                res.status = 401,
+                    res.json({ err: "Email ou senha inválidos" })
+            }
+        } else {
+            res.status = 404
+            res.json({ err: "Email na enviado não está cadastrado" })
+
+
+        }
+    } else {
+        res.status = 400
+        res.json({ err: "Email inválido" })
+    }
 })
 
 
