@@ -2,6 +2,8 @@ const expres = require('express')
 const app = expres()
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const jwt = require('jsonwebtoken')
+const JWTsecret = "teste"
 
 app.use(cors())
 
@@ -137,20 +139,34 @@ app.post("/auth", (req, res) => {
 
         if (user != undefined) {
             if (user.password == password) {
-                res.status = 200,
-                    res.json({ token: "TOKEM GERADO" })
+                jwt.sign({ id: user.id, email: user.email }, JWTsecret, { expiresIn: '48h' }, (err, token) => {
+                    if (err) {
+                        res.status(400)
+                        res.json({ err: "Falha interna" })
+                    } else {
+                        res.status(200)
+                        res.json({ token: token })
+
+                    }
+
+                })
+
+
+
+
+
             } else {
-                res.status = 401,
+                res.status(401),
                     res.json({ err: "Email ou senha inválidos" })
             }
         } else {
-            res.status = 404
+            res.status(404)
             res.json({ err: "Email na enviado não está cadastrado" })
 
 
         }
     } else {
-        res.status = 400
+        res.status(400)
         res.json({ err: "Email inválido" })
     }
 })
