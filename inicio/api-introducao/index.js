@@ -16,6 +16,9 @@ function auth(req, res, next) {
     const authToken = req.headers['authorization']
 
     if (authToken != undefined) {
+        const bearer = authToken.split(' ')
+        const token = bearer[1]
+        console.log(bearer)
 
     } else {
         res.status(401)
