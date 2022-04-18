@@ -9,6 +9,11 @@
 </head>
 
 <body>
+
+    <input type="text" name="email" id="">
+    <input type="text" name="password" id="">
+
+
     <h4>Lista de games</h4>
     <ul id="games"> </ul>
     <hr>
@@ -27,6 +32,12 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+    var axiosConfig = {
+        headers: {
+            Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhbGRvQGdtYWlsLmNvbSIsImlhdCI6MTY1MDMwNTk4NSwiZXhwIjoxNjUwNDc4Nzg1fQ.ZowS0WS0gF_14b9gbG8zBM--CFFBMI2-A4JODD2lj-Q"
+        }
+    }
+
     function createGame() {
         let titleInput = document.getElementById('title')
         let anoInput = document.getElementById('year')
@@ -101,7 +112,7 @@
 
     }
 
-    axios.get("http://localhost:5000/games")
+    axios.get("http://localhost:5000/games", axiosConfig)
         .then(
             response => {
                 const games = response.data

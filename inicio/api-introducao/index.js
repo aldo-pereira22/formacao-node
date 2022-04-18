@@ -18,15 +18,28 @@ function auth(req, res, next) {
     if (authToken != undefined) {
         const bearer = authToken.split(' ')
         const token = bearer[1]
-        console.log(bearer)
 
+        jwt.verify(token, JWTsecret, (err, data) => {
+            if (err) {
+                res.status(401)
+                res.json({ err: "Token inválido" })
+            } else {
+
+                req.token = token
+                req.logedUser = { id: data.id, email: data.email }
+
+                next()
+
+            }
+
+        })
+        console.log(token)
     } else {
         res.status(401)
         res.json({ err: "Token inválido!" })
     }
-    console.log(authToken)
+    // console.log(authToken)
 
-    next()
 
 }
 
