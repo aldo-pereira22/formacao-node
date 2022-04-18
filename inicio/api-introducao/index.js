@@ -10,6 +10,23 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+
+function auth(req, res, next) {
+
+    const authToken = req.headers['authorization']
+
+    if (authToken != undefined) {
+
+    } else {
+        res.status(401)
+        res.json({ err: "Token inválido!" })
+    }
+    console.log(authToken)
+
+    next()
+
+}
+
 var db = {
     games: [{
             id: 22,
@@ -52,7 +69,7 @@ var db = {
 }
 
 
-app.get("/games", (req, res) => {
+app.get("/games", auth, (req, res) => {
     res.statusCode = 200
     res.json(db.games)
 
