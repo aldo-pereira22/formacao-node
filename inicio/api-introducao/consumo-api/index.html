@@ -46,6 +46,7 @@
             }).then(res => {
                 let token = res.data.token
                 console.log(token)
+                localStorage.setItem("token", token)
                 alert("LOGADO!!")
             })
             .catch(err => {
@@ -55,7 +56,7 @@
     }
     var axiosConfig = {
         headers: {
-            Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhbGRvQGdtYWlsLmNvbSIsImlhdCI6MTY1MDMwNTk4NSwiZXhwIjoxNjUwNDc4Nzg1fQ.ZowS0WS0gF_14b9gbG8zBM--CFFBMI2-A4JODD2lj-Q"
+            Authorization: "Bearer " + localStorage.getItem("token")
         }
     }
 
