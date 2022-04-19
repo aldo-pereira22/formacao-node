@@ -9,9 +9,10 @@
 </head>
 
 <body>
-
-    <input type="text" name="email" id="">
-    <input type="text" name="password" id="">
+    <h2>Login</h2>
+    <input type="text" name="email" id="email" placeholder="exemplo@suaempresa.com">
+    <input type="text" name="password" id="password" placeholder="**********">
+    <button onclick="login()">Entrar</button>
 
 
     <h4>Lista de games</h4>
@@ -32,6 +33,26 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+    function login() {
+        let emailField = document.getElementById('email')
+        let passwordField = document.getElementById('password')
+
+        let email = emailField.value
+        let password = passwordField.value
+
+        axios.post('http://localhost:5000/auth', {
+                email,
+                password
+            }).then(res => {
+                let token = res.data.token
+                console.log(token)
+                alert("LOGADO!!")
+            })
+            .catch(err => {
+                alert("LOGIN INVALIDO")
+            })
+
+    }
     var axiosConfig = {
         headers: {
             Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhbGRvQGdtYWlsLmNvbSIsImlhdCI6MTY1MDMwNTk4NSwiZXhwIjoxNjUwNDc4Nzg1fQ.ZowS0WS0gF_14b9gbG8zBM--CFFBMI2-A4JODD2lj-Q"

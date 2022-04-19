@@ -12,9 +12,7 @@ app.use(bodyParser.json())
 
 
 function auth(req, res, next) {
-
     const authToken = req.headers['authorization']
-
     if (authToken != undefined) {
         const bearer = authToken.split(' ')
         const token = bearer[1]
@@ -27,13 +25,12 @@ function auth(req, res, next) {
 
                 req.token = token
                 req.logedUser = { id: data.id, email: data.email }
-
                 next()
 
             }
 
         })
-        console.log(token)
+
     } else {
         res.status(401)
         res.json({ err: "Token inválido!" })
@@ -183,10 +180,6 @@ app.post("/auth", (req, res) => {
                     }
 
                 })
-
-
-
-
 
             } else {
                 res.status(401),
