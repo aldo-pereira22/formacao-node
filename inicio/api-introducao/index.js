@@ -14,6 +14,7 @@ app.use(bodyParser.json())
 function auth(req, res, next) {
     const authToken = req.headers['authorization']
     if (authToken != undefined) {
+
         const bearer = authToken.split(' ')
         const token = bearer[1]
 
@@ -22,7 +23,6 @@ function auth(req, res, next) {
                 res.status(401)
                 res.json({ err: "Token inválido" })
             } else {
-
                 req.token = token
                 req.logedUser = { id: data.id, email: data.email }
                 next()
